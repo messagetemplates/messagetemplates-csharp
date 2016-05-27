@@ -6,7 +6,7 @@
     "tags": [ "message", "template", "serilog", "logging", "semantic", "structured" ],
     "projectUrl": "https://github.com/messagetemplates/MessageTemplates",
     "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
-    "iconUrl": "http://serilog.net/images/serilog-nuget.png"
+    "iconUrl": "http://messagetemplates.org/images/messagetemplates-nuget.png"
   },
   "buildOptions": {
     "xmlDoc": true

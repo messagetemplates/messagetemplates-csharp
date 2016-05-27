@@ -26,7 +26,7 @@ using MessageTemplates.Structure;
 
 namespace MessageTemplates.Parameters
 {
-    // Values in Serilog are simplified down into a lowest-common-denominator internal
+    // Values in MessageTemplates are simplified down into a lowest-common-denominator internal
     // type system so that there is a better chance of code written with one sink in
     // mind working correctly with any other. This technique also makes the programmer
     // writing a log event (roughly) in control of the cost of recording that event.
