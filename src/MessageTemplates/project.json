@@ -12,6 +12,16 @@
     "xmlDoc": true
   },
   "frameworks": {
+    "net40": {
+      "frameworkAssemblies": {
+        "System.Data": "",
+        "System.Numerics": "",
+        "System.Runtime.Serialization": "",
+        "System.Xml": "",
+        "System.Xml.Linq": ""
+      }
+    },
+
     "net4.5": {
       "buildOptions": {
         "define": [ "REMOTING" ]
