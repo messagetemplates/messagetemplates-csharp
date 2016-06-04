@@ -1,11 +1,11 @@
-﻿// Copyright 2013-2015 Serilog Contributors
-//
+﻿// Copyright 2013-2016 Serilog Contributors
+// 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-//
+// 
 //     http://www.apache.org/licenses/LICENSE-2.0
-//
+// 
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,6 +24,8 @@ namespace MessageTemplates.Parsing
     /// </summary>
     public class TextToken : MessageTemplateToken
     {
+        readonly string _text;
+
         /// <summary>
         /// Construct a <see cref="TextToken"/>.
         /// </summary>
@@ -32,14 +34,17 @@ namespace MessageTemplates.Parsing
         /// <exception cref="ArgumentNullException"></exception>
         public TextToken(string text, int startIndex = -1) : base(startIndex)
         {
-            if (text == null) throw new ArgumentNullException(nameof(text));
-            Text = text;
+            if (text == null) throw new ArgumentNullException("text");
+            _text = text;
         }
 
         /// <summary>
         /// The token's length.
         /// </summary>
-        public override int Length => Text.Length;
+        public override int Length
+        {
+            get { return _text.Length; }
+        }
 
         /// <summary>
         /// Render the token to the output.
@@ -49,7 +54,7 @@ namespace MessageTemplates.Parsing
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
         public override void Render(IReadOnlyDictionary<string, TemplatePropertyValue> properties, TextWriter output, IFormatProvider formatProvider = null)
         {
-            if (output == null) throw new ArgumentNullException(nameof(output));
+            if (output == null) throw new ArgumentNullException("output");
             output.Write(Text);
         }
 
@@ -63,17 +68,20 @@ namespace MessageTemplates.Parsing
         public override bool Equals(object obj)
         {
             var tt = obj as TextToken;
-            return tt != null && tt.Text == Text;
+            return tt != null && tt._text == _text;
         }
 
         /// <summary>
-        /// Serves as a hash function for a particular type.
+        /// Serves as a hash function for a particular type. 
         /// </summary>
         /// <returns>
         /// A hash code for the current <see cref="T:System.Object"/>.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override int GetHashCode() => Text.GetHashCode();
+        public override int GetHashCode()
+        {
+            return _text.GetHashCode();
+        }
 
         /// <summary>
         /// Returns a string that represents the current object.
@@ -82,11 +90,17 @@ namespace MessageTemplates.Parsing
         /// A string that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override string ToString() => Text;
+        public override string ToString()
+        {
+            return Text;
+        }
 
         /// <summary>
         /// The text of the token.
         /// </summary>
-        public string Text { get; }
+        public string Text
+        {
+            get { return _text; }
+        }
     }
 }

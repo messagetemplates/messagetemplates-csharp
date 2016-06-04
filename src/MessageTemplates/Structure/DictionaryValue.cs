@@ -1,4 +1,4 @@
-﻿// Copyright 2014 Serilog Contributors
+﻿// Copyright 2013-2016 Serilog Contributors
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ namespace MessageTemplates.Structure
         public DictionaryValue(IEnumerable<KeyValuePair<ScalarValue, TemplatePropertyValue>> elements)
         {
             if (elements == null) throw new ArgumentNullException("elements");
-            _elements = elements.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            _elements = elements.ToDictionary40(kvp => kvp.Key, kvp => kvp.Value);
         }
 
         /// <summary>

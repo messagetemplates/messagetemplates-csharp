@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-// Copyright 2014 Serilog Contributors
+// Copyright 2013-2016 Serilog Contributors
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ namespace MessageTemplates.Structure
         /// <remarks>Not presented as a dictionary because dictionary construction is
         /// relatively expensive; it is cheaper to build a dictionary over properties only
         /// when the structure is of interest.</remarks>
-        public IReadOnlyList<TemplateProperty> Properties { get { return _properties.ToList(); } }
+        public IReadOnlyList<TemplateProperty> Properties { get { return _properties.ToListNet40(); } }
 
         /// <summary>
         /// Render the value to the output.
