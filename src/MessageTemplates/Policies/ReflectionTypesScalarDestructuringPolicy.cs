@@ -21,7 +21,7 @@ namespace MessageTemplates.Policies
 {
     class ReflectionTypesScalarDestructuringPolicy : IDestructuringPolicy
     {
-        public bool TryDestructure(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out TemplatePropertyValue result)
+        public bool TryDestructure(object value, ITemplatePropertyValueFactory propertyValueFactory, out TemplatePropertyValue result)
         {
             // These types and their subclasses are property-laden and deep;
             // most sinks will convert them to strings.
@@ -34,5 +34,6 @@ namespace MessageTemplates.Policies
             result = null;
             return false;
         }
+        
     }
 }
