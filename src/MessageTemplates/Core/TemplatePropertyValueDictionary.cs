@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MessageTemplates.Structure;
 
@@ -9,7 +11,7 @@ namespace MessageTemplates.Core
     /// </summary>
     public class TemplatePropertyValueDictionary
     {
-        private TemplatePropertyList props;
+        private Dictionary<string, TemplatePropertyValue> props;
 
         /// <summary>
         /// 
@@ -17,7 +19,7 @@ namespace MessageTemplates.Core
         /// <param name="props"></param>
         public TemplatePropertyValueDictionary(TemplatePropertyList props)
         {
-            this.props = props;
+            this.props = props.ToDictionary(p => p.Name, p=> p.Value);
         }
 #if RESHAPED_REFLECTION
         // Net40
@@ -33,7 +35,7 @@ namespace MessageTemplates.Core
         /// <returns></returns>
         public bool TryGetValue(string propertyName, out TemplatePropertyValue propertyValue)
         {
-            throw new NotImplementedException();
+            return props.TryGetValue(propertyName, out propertyValue);
         }
     }
 }

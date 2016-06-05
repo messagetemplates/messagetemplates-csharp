@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MessageTemplates.Structure;
@@ -8,7 +9,7 @@ namespace MessageTemplates.Core
     /// <summary>
     /// 
     /// </summary>
-    public class TemplatePropertyValueList
+    public class TemplatePropertyValueList : IEnumerable<TemplatePropertyValue>
     {
 #if RESHAPED_REFLECTION
     // Net40
@@ -36,9 +37,24 @@ namespace MessageTemplates.Core
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public TemplatePropertyValue this[int index]
+        public TemplatePropertyValue this[int index] => _elements[index];
+
+        /// <summary>Returns an enumerator that iterates through the collection.</summary>
+        /// <returns>An enumerator that can be used to iterate through the collection.</returns>
+        public IEnumerator<TemplatePropertyValue> GetEnumerator()
         {
-            get { throw new NotImplementedException(); }
+            for (int index = 0; index < _elements.Length; index++)
+            {
+                var templateProperty = _elements[index];
+                yield return templateProperty;
+            }
+        }
+
+        /// <summary>Returns an enumerator that iterates through a collection.</summary>
+        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

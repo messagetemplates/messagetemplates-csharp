@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using MessageTemplates.Structure;
 
 namespace MessageTemplates.Core
@@ -6,14 +8,14 @@ namespace MessageTemplates.Core
     /// <summary>
     /// 
     /// </summary>
-    public class TemplatePropertyList
+    public class TemplatePropertyList : IEnumerable<TemplateProperty>
     {
 #if RESHAPED_REFLECTION
     // Net40
 #else
         // everything else
 #endif
-        private TemplateProperty[] result;
+        private readonly TemplateProperty[] result;
 
         /// <summary>
         /// 
@@ -27,16 +29,31 @@ namespace MessageTemplates.Core
         /// <summary>
         /// 
         /// </summary>
-        public int Length { get; set; }
+        public int Length => result.Length;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
-        public string this[int index]
+        public TemplateProperty this[int index] => result[index];
+
+        /// <summary>Returns an enumerator that iterates through a collection.</summary>
+        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+        public IEnumerator<TemplateProperty> GetEnumerator()
         {
-            get { throw new NotImplementedException(); }
+            for (int index = 0; index < result.Length; index++)
+            {
+                var templateProperty = result[index];
+                yield return templateProperty;
+            }
+        }
+
+        /// <summary>Returns an enumerator that iterates through a collection.</summary>
+        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
