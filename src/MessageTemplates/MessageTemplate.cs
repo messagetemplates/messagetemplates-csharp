@@ -19,7 +19,7 @@ using System.Linq;
 using MessageTemplates.Debugging;
 using MessageTemplates.Parsing;
 using System.Globalization;
-using MessageTemplates.Structure;
+using MessageTemplates.Core;
 
 namespace MessageTemplates
 {
@@ -132,7 +132,7 @@ namespace MessageTemplates
         /// <returns>The message created from the template and properties. If the
         /// properties are mismatched with the template, the template will be
         /// returned with incomplete substitution.</returns>
-        public string Render(IReadOnlyDictionary<string, TemplatePropertyValue> properties, IFormatProvider formatProvider = null)
+        public string Render(TemplatePropertyValueDictionary properties, IFormatProvider formatProvider = null)
         {
             var writer = new StringWriter(formatProvider);
             Render(properties, writer, formatProvider);
@@ -148,7 +148,7 @@ namespace MessageTemplates
         /// properties are mismatched with the template, the template will be
         /// returned with incomplete substitution.</param>
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
-        public void Render(IReadOnlyDictionary<string, TemplatePropertyValue> properties, TextWriter output, IFormatProvider formatProvider = null)
+        public void Render(TemplatePropertyValueDictionary properties, TextWriter output, IFormatProvider formatProvider = null)
         {
             foreach (var token in _tokens)
             {
@@ -172,7 +172,7 @@ namespace MessageTemplates
         public void Format(IFormatProvider formatProvider, TextWriter output, params object[] values)
         {
             var props = Capture(this, values);
-            this.Render(props.ToDictionary(x => x.Name, x => x.Value), output, formatProvider);
+            this.Render(new TemplatePropertyValueDictionary(props), output, formatProvider);
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace MessageTemplates
         /// <summary>
         /// Captures properties from the given template message and the provided values.
         /// </summary>
-        public static IEnumerable<TemplateProperty> Capture(
+        public static TemplatePropertyList Capture(
             string templateMessage, params object[] values)
         {
             var template = Parse(templateMessage);
@@ -200,7 +200,7 @@ namespace MessageTemplates
         /// Captures properties from the given message template and 
         /// provided values.
         /// </summary>
-        public static IEnumerable<TemplateProperty> CaptureWith(
+        public static TemplatePropertyList CaptureWith(
             int maximumDepth, IEnumerable<Type> additionalScalarTypes,
             IEnumerable<Core.IDestructuringPolicy> additionalDestructuringPolicies,
             MessageTemplate template, params object[] values)
@@ -218,7 +218,7 @@ namespace MessageTemplates
         /// Captures properties from the given message template and 
         /// provided values.
         /// </summary>
-        public static IEnumerable<TemplateProperty> Capture(
+        public static TemplatePropertyList Capture(
             MessageTemplate template, params object[] values)
         {
             var binder = new Parameters.PropertyBinder(
