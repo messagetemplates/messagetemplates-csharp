@@ -153,10 +153,14 @@ namespace MessageTemplates.Parameters
             {
                 var type = value.GetType();
                 var typeTag = type.Name;
+#if RESHAPED_REFLECTION
+                throw new NotImplementedException();
+#else
                 if (typeTag.Length <= 0 || IsCompilerGeneratedType(type))
                 {
                     typeTag = null;
                 }
+#endif
 
                 return new StructureValue(GetProperties(value, limiter), typeTag);
             }
@@ -164,27 +168,46 @@ namespace MessageTemplates.Parameters
             return new ScalarValue(value.ToString());
         }
 
-        bool IsValueTypeDictionary(Type valueType)
+        static bool IsValueTypeDictionary(Type valueType)
         {
+#if RESHAPED_REFLECTION
+            throw new NotImplementedException();
+#else
             return valueType.IsConstructedGenericType &&
                    valueType.GetGenericTypeDefinition() == typeof (Dictionary<,>) &&
                    IsValidDictionaryKeyType(valueType.GenericTypeArguments[0]);
+#endif
         }
 
-        bool IsValidDictionaryKeyType(Type valueType)
+        static bool IsValidDictionaryKeyType(Type valueType)
         {
+#if RESHAPED_REFLECTION
+            throw new NotImplementedException();
+#else
             return BuiltInScalarTypes.Contains(valueType) ||
                    valueType.GetTypeInfo().IsEnum;
+#endif
         }
 
         static IEnumerable<TemplateProperty> GetProperties(object value, IMessageTemplatePropertyValueFactory recursive)
         {
-            foreach (var prop in value.GetType().GetPropertiesRecursive())
+            IEnumerable<PropertyInfo> properties = null;
+#if RESHAPED_REFLECTION
+            throw new NotImplementedException();
+#else
+            properties = value.GetType().GetPropertiesRecursive();
+#endif
+
+            foreach (var prop in properties)
             {
                 object propValue;
                 try
                 {
+#if RESHAPED_REFLECTION
+                    throw new NotImplementedException();
+#else
                     propValue = prop.GetValue(value);
+#endif
                 }
                 catch (TargetParameterCountException)
                 {
@@ -200,7 +223,9 @@ namespace MessageTemplates.Parameters
             }
         }
 
+#if !RESHAPED_REFLECTION
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // ReSharper disable once MemberCanBePrivate.Global
         internal static bool IsCompilerGeneratedType(Type type)
         {
             var typeInfo = type.GetTypeInfo();
@@ -211,5 +236,6 @@ namespace MessageTemplates.Parameters
                 && (typeName[0] == '<'
                     || (typeName.Length > 2 && typeName[0] == 'V' && typeName[1] == 'B' && typeName[2] == '$'));
         }
+#endif
     }
 }

@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MessageTemplates.Core;
 
 namespace MessageTemplates.Structure
 {
@@ -24,7 +25,7 @@ namespace MessageTemplates.Structure
     /// </summary>
     public class DictionaryValue : TemplatePropertyValue
     {
-        readonly IReadOnlyDictionary<ScalarValue, TemplatePropertyValue> _elements;
+        readonly ScalarTemplatePropertyValueDictionary _elements;
 
         /// <summary>
         /// Create a <see cref="DictionaryValue"/> with the provided <paramref name="elements"/>.
@@ -34,13 +35,13 @@ namespace MessageTemplates.Structure
         public DictionaryValue(IEnumerable<KeyValuePair<ScalarValue, TemplatePropertyValue>> elements)
         {
             if (elements == null) throw new ArgumentNullException("elements");
-            _elements = elements.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+            _elements = new ScalarTemplatePropertyValueDictionary(elements);
         }
 
         /// <summary>
         /// The dictionary mapping.
         /// </summary>
-        public IReadOnlyDictionary<ScalarValue, TemplatePropertyValue> Elements { get { return _elements; } }
+        public ScalarTemplatePropertyValueDictionary Elements { get { return _elements; } }
 
         /// <summary>
         /// Render the value to the output.

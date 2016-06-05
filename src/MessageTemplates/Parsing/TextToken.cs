@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using MessageTemplates.Core;
 using MessageTemplates.Structure;
 
 namespace MessageTemplates.Parsing
@@ -47,7 +48,7 @@ namespace MessageTemplates.Parsing
         /// <param name="properties">Properties that may be represented by the token.</param>
         /// <param name="output">Output for the rendered string.</param>
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
-        public override void Render(IReadOnlyDictionary<string, TemplatePropertyValue> properties, TextWriter output, IFormatProvider formatProvider = null)
+        public override void Render(TemplatePropertyValueDictionary properties, TextWriter output, IFormatProvider formatProvider = null)
         {
             if (output == null) throw new ArgumentNullException(nameof(output));
             output.Write(Text);

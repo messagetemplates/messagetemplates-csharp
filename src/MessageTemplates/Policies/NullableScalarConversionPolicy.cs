@@ -22,6 +22,9 @@ namespace MessageTemplates.Policies
     {
         public bool TryConvertToScalar(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out ScalarValue result)
         {
+#if RESHAPED_REFLECTION
+            throw new System.NotImplementedException();
+#else
             var type = value.GetType();
             if (!type.IsConstructedGenericType || type.GetGenericTypeDefinition() != typeof(Nullable<>))
             {
@@ -34,6 +37,7 @@ namespace MessageTemplates.Policies
             var innerValue = Convert.ChangeType(value, targetType);
             result = propertyValueFactory.CreatePropertyValue(innerValue) as ScalarValue;
             return result != null;
+#endif
         }
     }
 }

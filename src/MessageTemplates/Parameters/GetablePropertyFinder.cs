@@ -19,6 +19,7 @@ using System.Reflection;
 
 namespace MessageTemplates.Parameters
 {
+#if !RESHAPED_REFLECTION
     static class GetablePropertyFinder
     {
         internal static IEnumerable<PropertyInfo> GetPropertiesRecursive(this Type type)
@@ -43,4 +44,5 @@ namespace MessageTemplates.Parameters
             }
         }
     }
+#endif
 }
