@@ -9,6 +9,11 @@
   "buildOptions": {
   },
   "frameworks": {
+    "net4.5.2": {
+        "buildOptions": {
+            "define": [ "REMOTING" ]
+        }
+    },
     "netcoreapp1.0": {
       "define": [ "ASYNCLOCAL" ],
       "dependencies": {
