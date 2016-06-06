@@ -22,6 +22,8 @@ Pop-Location
 
 Push-Location test\MessageTemplates.Net40Tests
 
+&nuget install ..\..\test\MessageTemplates.Net40Tests\packages.config -SolutionDirectory ..\..\..
+
 &msbuild ..\..\test\MessageTemplates.Net40Tests\MessageTemplates.Net40Tests.csproj /p:Configuration=Release
 if($LASTEXITCODE -ne 0) { exit 2 }
 
