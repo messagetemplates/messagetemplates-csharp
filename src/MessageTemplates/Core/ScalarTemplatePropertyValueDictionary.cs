@@ -11,11 +11,6 @@ namespace MessageTemplates.Core
     public class ScalarTemplatePropertyValueDictionary
         : IEnumerable<KeyValuePair<ScalarValue, TemplatePropertyValue>>
     {
-#if RESHAPED_REFLECTION
-    // Net40
-#else
-        // everything else
-#endif
         private IEnumerable<KeyValuePair<ScalarValue, TemplatePropertyValue>> elements;
 
         /// <summary>

@@ -22,8 +22,8 @@ namespace MessageTemplates.Policies
     {
         public bool TryConvertToScalar(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out ScalarValue result)
         {
-#if RESHAPED_REFLECTION
-            throw new System.NotImplementedException();
+#if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
+            throw new NotImplementedException();
 #else
             var type = value.GetType();
             if (!type.IsConstructedGenericType || type.GetGenericTypeDefinition() != typeof(Nullable<>))

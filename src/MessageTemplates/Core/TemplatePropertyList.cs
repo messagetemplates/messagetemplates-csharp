@@ -10,11 +10,6 @@ namespace MessageTemplates.Core
     /// </summary>
     public class TemplatePropertyList : IEnumerable<TemplateProperty>
     {
-#if RESHAPED_REFLECTION
-    // Net40
-#else
-        // everything else
-#endif
         private readonly TemplateProperty[] result;
 
         /// <summary>

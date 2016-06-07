@@ -153,7 +153,7 @@ namespace MessageTemplates.Parameters
             {
                 var type = value.GetType();
                 var typeTag = type.Name;
-#if RESHAPED_REFLECTION
+#if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
                 throw new NotImplementedException();
 #else
                 if (typeTag.Length <= 0 || IsCompilerGeneratedType(type))
@@ -170,8 +170,8 @@ namespace MessageTemplates.Parameters
 
         static bool IsValueTypeDictionary(Type valueType)
         {
-#if RESHAPED_REFLECTION
-            throw new NotImplementedException();
+#if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
+                throw new NotImplementedException();
 #else
             return valueType.IsConstructedGenericType &&
                    valueType.GetGenericTypeDefinition() == typeof (Dictionary<,>) &&
@@ -181,8 +181,8 @@ namespace MessageTemplates.Parameters
 
         static bool IsValidDictionaryKeyType(Type valueType)
         {
-#if RESHAPED_REFLECTION
-            throw new NotImplementedException();
+#if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
+                throw new NotImplementedException();
 #else
             return BuiltInScalarTypes.Contains(valueType) ||
                    valueType.GetTypeInfo().IsEnum;
@@ -192,8 +192,8 @@ namespace MessageTemplates.Parameters
         static IEnumerable<TemplateProperty> GetProperties(object value, IMessageTemplatePropertyValueFactory recursive)
         {
             IEnumerable<PropertyInfo> properties = null;
-#if RESHAPED_REFLECTION
-            throw new NotImplementedException();
+#if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
+                throw new NotImplementedException();
 #else
             properties = value.GetType().GetPropertiesRecursive();
 #endif
@@ -203,8 +203,8 @@ namespace MessageTemplates.Parameters
                 object propValue;
                 try
                 {
-#if RESHAPED_REFLECTION
-                    throw new NotImplementedException();
+#if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
+                throw new NotImplementedException();
 #else
                     propValue = prop.GetValue(value);
 #endif
@@ -223,7 +223,7 @@ namespace MessageTemplates.Parameters
             }
         }
 
-#if !RESHAPED_REFLECTION
+#if REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         // ReSharper disable once MemberCanBePrivate.Global
         internal static bool IsCompilerGeneratedType(Type type)

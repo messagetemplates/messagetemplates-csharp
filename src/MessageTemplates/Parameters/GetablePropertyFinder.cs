@@ -19,7 +19,7 @@ using System.Reflection;
 
 namespace MessageTemplates.Parameters
 {
-#if !RESHAPED_REFLECTION
+#if REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
     static class GetablePropertyFinder
     {
         internal static IEnumerable<PropertyInfo> GetPropertiesRecursive(this Type type)

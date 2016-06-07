@@ -21,11 +21,6 @@ namespace MessageTemplates.Core
         {
             this.props = props.ToDictionary(p => p.Name, p=> p.Value);
         }
-#if RESHAPED_REFLECTION
-        // Net40
-#else
-        // everything else
-#endif
 
         /// <summary>
         /// 
