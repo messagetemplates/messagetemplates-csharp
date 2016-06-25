@@ -22,22 +22,28 @@ namespace MessageTemplates.Policies
     {
         public bool TryConvertToScalar(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out ScalarValue result)
         {
-#if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
-            throw new NotImplementedException();
-#else
             var type = value.GetType();
+#if !REFLECTION_API_EVOLVED
+            if (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(Nullable<>))
+#else
             if (!type.IsConstructedGenericType || type.GetGenericTypeDefinition() != typeof(Nullable<>))
+#endif
             {
                 result = null;
                 return false;
             }
-
+#if USE_DYNAMIC
+            var dynamicValue = (dynamic)value;
+            var innerValue = dynamicValue.HasValue ? (object)dynamicValue.Value : null;
+#elif !REFLECTION_API_EVOLVED
+            var targetType = type.GetGenericArguments()[0];
+            var innerValue = Convert.ChangeType(value, targetType, null);
+#else
             var targetType = type.GenericTypeArguments[0];
-
             var innerValue = Convert.ChangeType(value, targetType);
+#endif
             result = propertyValueFactory.CreatePropertyValue(innerValue) as ScalarValue;
             return result != null;
-#endif
         }
     }
 }
