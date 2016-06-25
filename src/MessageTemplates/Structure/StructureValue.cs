@@ -16,6 +16,7 @@ using System.Collections.Generic;
 
 using System.IO;
 using System.Linq;
+using MessageTemplates.Core;
 
 namespace MessageTemplates.Structure
 {
@@ -25,7 +26,7 @@ namespace MessageTemplates.Structure
     public class StructureValue : TemplatePropertyValue
     {
         readonly string _typeTag;
-        readonly TemplateProperty[] _properties;
+        readonly TemplatePropertyList _properties;
 
         /// <summary>
         /// Construct a <see cref="StructureValue"/> with the provided properties.
@@ -38,7 +39,7 @@ namespace MessageTemplates.Structure
         {
             if (properties == null) throw new ArgumentNullException("properties");
             _typeTag = typeTag;
-            _properties = properties.ToArray();
+            _properties = new TemplatePropertyList(properties.ToArray());
         }
 
         /// <summary>
@@ -53,7 +54,7 @@ namespace MessageTemplates.Structure
         /// <remarks>Not presented as a dictionary because dictionary construction is
         /// relatively expensive; it is cheaper to build a dictionary over properties only
         /// when the structure is of interest.</remarks>
-        public IReadOnlyList<TemplateProperty> Properties { get { return _properties.ToList(); } }
+        public TemplatePropertyList Properties { get { return _properties; } }
 
         /// <summary>
         /// Render the value to the output.

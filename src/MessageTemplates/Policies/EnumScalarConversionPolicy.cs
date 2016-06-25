@@ -22,7 +22,14 @@ namespace MessageTemplates.Policies
     {
         public bool TryConvertToScalar(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out ScalarValue result)
         {
-            if (value.GetType().GetTypeInfo().IsEnum)
+            bool isEnum = false;
+#if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
+            isEnum = value.GetType().IsEnum;
+#else
+            isEnum = value.GetType().GetTypeInfo().IsEnum;
+#endif
+
+            if (isEnum)
             {
                 result = new ScalarValue(value);
                 return true;

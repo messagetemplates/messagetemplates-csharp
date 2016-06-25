@@ -16,6 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using MessageTemplates.Core;
 
 namespace MessageTemplates.Structure
 {
@@ -24,7 +25,7 @@ namespace MessageTemplates.Structure
     /// </summary>
     public class SequenceValue : TemplatePropertyValue
     {
-        readonly TemplatePropertyValue[] _elements;
+        readonly TemplatePropertyValueList _elements;
 
         /// <summary>
         /// Create a <see cref="SequenceValue"/> with the provided <paramref name="elements"/>.
@@ -34,19 +35,13 @@ namespace MessageTemplates.Structure
         public SequenceValue(IEnumerable<TemplatePropertyValue> elements)
         {
             if (elements == null) throw new ArgumentNullException("elements");
-            _elements = elements.ToArray();
+            _elements = new TemplatePropertyValueList(elements);
         }
 
         /// <summary>
         /// The elements of the sequence.
         /// </summary>
-        public IReadOnlyList<TemplatePropertyValue> Elements
-        {
-            get
-            {
-                return _elements.ToList();
-            }
-        }
+        public TemplatePropertyValueList Elements => _elements;
 
         /// <summary>
         /// Render the value to the output.

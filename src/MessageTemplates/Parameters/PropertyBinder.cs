@@ -15,6 +15,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using MessageTemplates.Core;
 using MessageTemplates.Debugging;
 using MessageTemplates.Parsing;
 using MessageTemplates.Structure;
@@ -26,7 +27,7 @@ namespace MessageTemplates.Parameters
     {
         readonly PropertyValueConverter _valueConverter;
 
-        static readonly TemplateProperty[] NoProperties = new TemplateProperty[0];
+        static readonly TemplatePropertyList NoProperties = new TemplatePropertyList(null);
 
         public PropertyBinder(PropertyValueConverter valueConverter)
         {
@@ -41,7 +42,7 @@ namespace MessageTemplates.Parameters
         /// represented in the message template.</param>
         /// <returns>A list of properties; if the template is malformed then
         /// this will be empty.</returns>
-        public IEnumerable<TemplateProperty> ConstructProperties(MessageTemplate messageTemplate, object[] messageTemplateParameters)
+        public TemplatePropertyList ConstructProperties(MessageTemplate messageTemplate, object[] messageTemplateParameters)
         {
             if (messageTemplateParameters == null || messageTemplateParameters.Length == 0)
             {
@@ -57,7 +58,7 @@ namespace MessageTemplates.Parameters
             return ConstructNamedProperties(messageTemplate, messageTemplateParameters);
         }
 
-        IEnumerable<TemplateProperty> ConstructPositionalProperties(MessageTemplate template, object[] messageTemplateParameters)
+        TemplatePropertyList ConstructPositionalProperties(MessageTemplate template, object[] messageTemplateParameters)
         {
             var positionalProperties = template.PositionalProperties;
 
@@ -90,14 +91,14 @@ namespace MessageTemplates.Parameters
             if (next != result.Length)
                 Array.Resize(ref result, next);
 
-            return result;
+            return new TemplatePropertyList(result);
         }
 
-        IEnumerable<TemplateProperty> ConstructNamedProperties(MessageTemplate template, object[] messageTemplateParameters)
+        TemplatePropertyList ConstructNamedProperties(MessageTemplate template, object[] messageTemplateParameters)
         {
             var namedProperties = template.NamedProperties;
             if (namedProperties == null)
-                return Enumerable.Empty<TemplateProperty>();
+                return NoProperties;
 
             var matchedRun = namedProperties.Length;
             if (namedProperties.Length != messageTemplateParameters.Length)
@@ -114,7 +115,7 @@ namespace MessageTemplates.Parameters
                 result[i] = ConstructProperty(property, value);
             }
 
-            return result;
+            return new TemplatePropertyList(result);
         }
 
         TemplateProperty ConstructProperty(PropertyToken propertyToken, object value)
