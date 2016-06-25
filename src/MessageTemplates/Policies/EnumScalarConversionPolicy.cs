@@ -24,7 +24,7 @@ namespace MessageTemplates.Policies
         {
             bool isEnum = false;
 #if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
-            throw new System.NotImplementedException();
+            isEnum = value.GetType().IsEnum;
 #else
             isEnum = value.GetType().GetTypeInfo().IsEnum;
 #endif

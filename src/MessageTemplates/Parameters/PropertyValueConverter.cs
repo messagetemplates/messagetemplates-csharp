@@ -20,9 +20,9 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using MessageTemplates.Core;
 using MessageTemplates.Debugging;
+using MessageTemplates.Structure;
 using MessageTemplates.Parsing;
 using MessageTemplates.Policies;
-using MessageTemplates.Structure;
 
 namespace MessageTemplates.Parameters
 {
@@ -138,11 +138,30 @@ namespace MessageTemplates.Parameters
                 // multiple different interpretations.
                 if (IsValueTypeDictionary(valueType))
                 {
-                    return new DictionaryValue(enumerable.Cast<dynamic>()
-                        .Select(kvp => new KeyValuePair<ScalarValue, TemplatePropertyValue>(
-                                           (ScalarValue)limiter.CreatePropertyValue(kvp.Key, destructuring),
-                                           limiter.CreatePropertyValue(kvp.Value, destructuring)))
-                        .Where(kvp => kvp.Key.Value != null));
+                    Func<object, object> getKey;
+                    Func<object, object> getValue;
+#if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
+                    PropertyInfo keyProperty = null;
+                    getKey = o => (keyProperty ?? (keyProperty = o.GetType().GetProperty("Key"))).GetValue(o, null);
+                    PropertyInfo valueProperty = null;
+                    getValue = o => (valueProperty ?? (valueProperty = o.GetType().GetProperty("Value"))).GetValue(o, null);
+#else
+                    PropertyInfo keyProperty = null;
+                    getKey = o => (keyProperty ?? (keyProperty = o.GetType().GetRuntimeProperty("Key"))).GetValue(o);
+                    PropertyInfo valueProperty = null;
+                    getValue = o => (valueProperty ?? (valueProperty = o.GetType().GetRuntimeProperty("Value"))).GetValue(o);
+#endif
+
+                    // TODO: stop using LINQ
+                    return new DictionaryValue(enumerable
+                        .Cast<object>()
+                        .Where(o => o != null)
+                        .Select(o => new { Key = getKey(o), Value = getValue(o) })
+                        .Select(o => new KeyValuePair<ScalarValue, TemplatePropertyValue>(
+                            key: (ScalarValue)limiter.CreatePropertyValue(o.Key, destructuring),
+                            value: limiter.CreatePropertyValue(o.Value, destructuring))
+                        )
+                    );
                 }
 
                 return new SequenceValue(
@@ -153,15 +172,13 @@ namespace MessageTemplates.Parameters
             {
                 var type = value.GetType();
                 var typeTag = type.Name;
-#if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
-                throw new NotImplementedException();
-#else
+#if REFLECTION_API_EVOLVED
                 if (typeTag.Length <= 0 || IsCompilerGeneratedType(type))
-                {
                     typeTag = null;
-                }
+#else
+                if (typeTag.Length <= 0 || !char.IsLetter(typeTag[0]))
+                    typeTag = null;
 #endif
-
                 return new StructureValue(GetProperties(value, limiter), typeTag);
             }
 
@@ -171,40 +188,47 @@ namespace MessageTemplates.Parameters
         static bool IsValueTypeDictionary(Type valueType)
         {
 #if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
-                throw new NotImplementedException();
+            return valueType.IsGenericType &&
+                   valueType.GetGenericTypeDefinition() == typeof(Dictionary<,>) &&
+                   IsValidDictionaryKeyType(valueType.GetGenericArguments()[0]);
 #else
             return valueType.IsConstructedGenericType &&
-                   valueType.GetGenericTypeDefinition() == typeof (Dictionary<,>) &&
+                   valueType.GetGenericTypeDefinition() == typeof(Dictionary<,>) &&
                    IsValidDictionaryKeyType(valueType.GenericTypeArguments[0]);
 #endif
         }
 
         static bool IsValidDictionaryKeyType(Type valueType)
         {
-#if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
-                throw new NotImplementedException();
-#else
             return BuiltInScalarTypes.Contains(valueType) ||
-                   valueType.GetTypeInfo().IsEnum;
+#if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
+                valueType.IsEnum;
+#else
+                valueType.GetTypeInfo().IsEnum;
 #endif
         }
 
-        static IEnumerable<TemplateProperty> GetProperties(object value, IMessageTemplatePropertyValueFactory recursive)
+        static IEnumerable<TemplateProperty> GetProperties(
+            object value, IMessageTemplatePropertyValueFactory recursive)
         {
-            IEnumerable<PropertyInfo> properties = null;
-#if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
-                throw new NotImplementedException();
-#else
-            properties = value.GetType().GetPropertiesRecursive();
-#endif
+            var properties =
 
+#if !REFLECTION_API_EVOLVED
+                // TODO: stop using LINQ
+                value.GetType().GetProperties().Where(p => p.CanRead &&
+                                                            p.GetGetMethod().IsPublic &&
+                                                            !p.GetGetMethod().IsStatic &&
+                                                            (p.Name != "Item" || p.GetIndexParameters().Length == 0));
+#else
+                value.GetType().GetPropertiesRecursive();
+#endif
             foreach (var prop in properties)
             {
                 object propValue;
                 try
                 {
 #if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
-                throw new NotImplementedException();
+                    propValue = prop.GetValue(value, null);
 #else
                     propValue = prop.GetValue(value);
 #endif
