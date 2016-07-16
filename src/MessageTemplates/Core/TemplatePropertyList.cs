@@ -18,6 +18,7 @@ namespace MessageTemplates.Core
         /// <param name="result"></param>
         public TemplatePropertyList(TemplateProperty[] result)
         {
+            if (result == null) throw new ArgumentNullException(nameof(result));
             this.result = result;
         }
 
@@ -34,14 +35,11 @@ namespace MessageTemplates.Core
         public TemplateProperty this[int index] => result[index];
 
         /// <summary>Returns an enumerator that iterates through a collection.</summary>
-        /// <returns>An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.</returns>
+        /// <returns>An <see cref="IEnumerator{T}" /> object that can be used to iterate 
+        /// through the collection.</returns>
         public IEnumerator<TemplateProperty> GetEnumerator()
         {
-            for (int index = 0; index < result.Length; index++)
-            {
-                var templateProperty = result[index];
-                yield return templateProperty;
-            }
+            return ((IEnumerable<TemplateProperty>) result).GetEnumerator();
         }
 
         /// <summary>Returns an enumerator that iterates through a collection.</summary>
