@@ -27,7 +27,8 @@ namespace MessageTemplates.Parameters
     {
         readonly PropertyValueConverter _valueConverter;
 
-        static readonly TemplatePropertyList NoProperties = new TemplatePropertyList(null);
+        static readonly TemplateProperty[] NoPropertiesArray = new TemplateProperty[0];
+        static readonly TemplatePropertyList NoProperties = new TemplatePropertyList(NoPropertiesArray);
 
         public PropertyBinder(PropertyValueConverter valueConverter)
         {
