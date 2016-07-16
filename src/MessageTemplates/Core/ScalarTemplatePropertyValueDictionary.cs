@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using MessageTemplates.Structure;
+using System.Linq;
 
 namespace MessageTemplates.Core
 {
@@ -11,15 +12,16 @@ namespace MessageTemplates.Core
     public class ScalarTemplatePropertyValueDictionary
         : IEnumerable<KeyValuePair<ScalarValue, TemplatePropertyValue>>
     {
-        private IEnumerable<KeyValuePair<ScalarValue, TemplatePropertyValue>> elements;
+        private IDictionary<ScalarValue, TemplatePropertyValue> elements;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="elements"></param>
-        public ScalarTemplatePropertyValueDictionary(IEnumerable<KeyValuePair<ScalarValue, TemplatePropertyValue>> elements)
+        public ScalarTemplatePropertyValueDictionary(
+            IEnumerable<KeyValuePair<ScalarValue, TemplatePropertyValue>> elements)
         {
-            this.elements = elements;
+            this.elements = elements.ToDictionary(e => e.Key, e => e.Value);
         }
 
         /// <summary>
@@ -28,7 +30,7 @@ namespace MessageTemplates.Core
         /// <returns></returns>
         public IEnumerator<KeyValuePair<ScalarValue, TemplatePropertyValue>> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return elements.GetEnumerator();
         }
 
         /// <summary>
