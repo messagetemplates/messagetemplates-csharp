@@ -55,8 +55,8 @@ namespace MessageTemplates
         /// <param name="tokens">The text and property tokens defining the template.</param>
         public MessageTemplate(string text, IEnumerable<MessageTemplateToken> tokens)
         {
-            if (text == null) throw new ArgumentNullException("text");
-            if (tokens == null) throw new ArgumentNullException("tokens");
+            if (text == null) throw new ArgumentNullException(nameof(text));
+            if (tokens == null) throw new ArgumentNullException(nameof(tokens));
 
             _text = text;
             _tokens = tokens.ToArray();
@@ -108,20 +108,11 @@ namespace MessageTemplates
         /// <summary>
         /// The tokens parsed from the template.
         /// </summary>
-        public IEnumerable<MessageTemplateToken> Tokens
-        {
-            get { return _tokens; }
-        }
+        public IEnumerable<MessageTemplateToken> Tokens => _tokens;
 
-        internal PropertyToken[] NamedProperties
-        {
-            get { return _namedProperties; }
-        }
+        internal PropertyToken[] NamedProperties => _namedProperties;
 
-        internal PropertyToken[] PositionalProperties
-        {
-            get { return _positionalProperties; }
-        }
+        internal PropertyToken[] PositionalProperties => _positionalProperties;
 
         /// <summary>
         /// Convert the message template into a textual message, given the
@@ -155,6 +146,7 @@ namespace MessageTemplates
                 token.Render(properties, output, formatProvider);
             }
         }
+
         /// <summary>
         /// Parses a message template (e.g. "hello, {name}") into a 
         /// <see cref="MessageTemplate"/> structure.

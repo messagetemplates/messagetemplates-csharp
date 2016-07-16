@@ -45,12 +45,17 @@ namespace MessageTemplates.Parsing
         /// </summary>
         public abstract int Length { get; }
 
+
+
         /// <summary>
         /// Render the token to the output.
         /// </summary>
         /// <param name="properties">Properties that may be represented by the token.</param>
         /// <param name="output">Output for the rendered string.</param>
         /// <param name="formatProvider">Supplies culture-specific formatting information, or null.</param>
-        public abstract void Render(TemplatePropertyValueDictionary properties, TextWriter output, IFormatProvider formatProvider = null);
+        public abstract void Render(
+            TemplatePropertyValueDictionary properties,
+            TextWriter output,
+            IFormatProvider formatProvider = null);
     }
 }

@@ -78,7 +78,7 @@ namespace MessageTemplates.Parsing
         /// The token's length.
         /// </summary>
         public override int Length => _rawText.Length;
-
+        
         /// <summary>
         /// Render the token to the output.
         /// </summary>

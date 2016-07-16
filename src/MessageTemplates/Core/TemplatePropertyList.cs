@@ -30,6 +30,11 @@ namespace MessageTemplates.Core
         /// <summary>
         /// 
         /// </summary>
+        public int Count => result.Length;
+
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
         public TemplateProperty this[int index] => result[index];

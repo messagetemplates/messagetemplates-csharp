@@ -38,7 +38,7 @@ namespace MessageTemplates.Structure
         /// <summary>
         /// The value, which may be <code>null</code>.
         /// </summary>
-        public object Value { get { return _value; } }
+        public object Value => _value;
 
         /// <summary>
         /// Render the value to the output.
@@ -49,7 +49,7 @@ namespace MessageTemplates.Structure
         /// <seealso cref="TemplatePropertyValue.ToString(string, IFormatProvider)"/>.
         public override void Render(TextWriter output, string format = null, IFormatProvider formatProvider = null)
         {
-            if (output == null) throw new ArgumentNullException("output");
+            if (output == null) throw new ArgumentNullException(nameof(output));
 
             if (_value == null)
             {
@@ -74,14 +74,9 @@ namespace MessageTemplates.Structure
                 else
                 {
                     var f = _value as IFormattable;
-                    if (f != null)
-                    {
-                        output.Write(f.ToString(format, formatProvider ?? CultureInfo.InvariantCulture));
-                    }
-                    else
-                    {
-                        output.Write(_value.ToString());
-                    }
+                    output.Write(
+                        f?.ToString(format, formatProvider ?? CultureInfo.InvariantCulture)
+                        ?? _value.ToString());
                 }
             }
         }
@@ -94,8 +89,7 @@ namespace MessageTemplates.Structure
         public override bool Equals(object obj)
         {
             var sv = obj as ScalarValue;
-            if (sv == null) return false;
-            return Equals(_value, sv._value);
+            return sv != null && Equals(_value, sv._value);
         }
 
         /// <summary>
@@ -104,8 +98,7 @@ namespace MessageTemplates.Structure
         /// <returns>The instance's hash code.</returns>
         public override int GetHashCode()
         {
-            if (_value == null) return 0;
-            return _value.GetHashCode();
+            return _value?.GetHashCode() ?? 0;
         }
     }
 }
