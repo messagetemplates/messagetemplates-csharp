@@ -1,5 +1,4 @@
 {
-  "version": "1.0.0-beta-*",
   "testRunner": "xunit",
   "dependencies": {
     "MessageTemplates": { "target": "project" },
@@ -11,11 +10,11 @@
   "frameworks": {
     "net4.5.2": {
         "buildOptions": {
-            "define": [ "REMOTING" ]
+            "define": [ ]
         }
     },
     "netcoreapp1.0": {
-        "define": [ "ASYNCLOCAL" ],
+        "define": [ ],
         "dependencies": {
             "Microsoft.NETCore.App": {
                 "type": "platform",
