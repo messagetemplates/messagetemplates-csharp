@@ -1,5 +1,5 @@
 {
-    "version": "1.0.0-*",
+    "version": "1.0.0-rc-*",
     "description": "Message templates - the ability to format named string values, and capture the properties",
     "authors": [ "Serilog Contributors", "Adam Chester" ],
     "packOptions": {
