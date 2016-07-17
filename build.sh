@@ -12,5 +12,5 @@ for path in test/MessageTemplates.Tests/project.json; do
 done
 
 nuget restore test/MessageTemplates.Net40Tests/packages.config -SolutionDirectory .
-xbuild test/MessageTemplates.Net40Tests/MessageTemplates.Net40Tests.csproj /p:Configuration=Release
+xbuild /v:m test/MessageTemplates.Net40Tests/MessageTemplates.Net40Tests.csproj /p:Configuration=Release
 mono packages/xunit.runner.console.2.2.0-beta1-build3239/tools/xunit.console.exe test/MessageTemplates.Net40Tests/bin/Release/MessageTemplates.Net40Tests.dll

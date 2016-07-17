@@ -34,7 +34,7 @@
                 "define": [ "REFLECTION_API_EVOLVED" ]
             },
             "dependencies": {
-                "Microsoft.CSharp": "4.0.1-*",
+                "Microsoft.CSharp": "4.0.1",
                 "NETStandard.Library": "1.6.0"
             }
         },
@@ -43,7 +43,7 @@
                 "define": [ "REFLECTION_API_EVOLVED" ]
             },
             "dependencies": {
-                "Microsoft.CSharp": "4.0.1-*",
+                "Microsoft.CSharp": "4.0.1",
                 "NETStandard.Library": "1.6.0"
             }
         }
