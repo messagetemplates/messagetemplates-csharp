@@ -4,7 +4,7 @@
     "authors": [ "Serilog Contributors", "Adam Chester" ],
     "packOptions": {
         "tags": [ "message", "template", "serilog", "logging", "semantic", "structured" ],
-        "projectUrl": "https://github.com/messagetemplates/MessageTemplates",
+        "projectUrl": "https://github.com/messagetemplates/messagetemplates-csharp",
         "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
         "iconUrl": "http://messagetemplates.org/images/messagetemplates-nuget.png"
     },
