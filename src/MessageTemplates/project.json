@@ -17,16 +17,18 @@
                 "define": [ "REFLECTION_API_EVOLVED" ]
             }
         },
-        "net40": {
+        "net35": {
             "buildOptions": {
-                "define": [ ]
+                "define": [ "NO_STRING_ISNULLORWHITESPACE" ]
             },
             "assemblies": {
-                "System.Data": "",
-                "System.Numerics": "",
-                "System.Runtime.Serialization": "",
-                "System.Xml": "",
-                "System.Xml.Linq": ""
+            }
+        },
+        "net40": {
+            "buildOptions": {
+                "define": []
+            },
+            "assemblies": {
             }
         },
         "netstandard1.0": {

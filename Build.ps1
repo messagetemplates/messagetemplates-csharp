@@ -36,3 +36,17 @@ if($LASTEXITCODE -ne 0) { exit 2 }
 if($LASTEXITCODE -ne 0) { exit 2 }
 
 Pop-Location
+
+
+Push-Location 
+
+&nuget install test\MessageTemplates.Net35Tests\packages.config -SolutionDirectory .
+
+&msbuild test\MessageTemplates.Net35Tests\MessageTemplates.Net35Tests.csproj /p:Configuration=Release
+if($LASTEXITCODE -ne 0) { exit 2 }
+
+& packages\xunit.runner.console.2.2.0-beta1-build3239\tools\xunit.console.x86.exe test\MessageTemplates.Net35Tests\bin\Release\MessageTemplates.Net35Tests.dll
+
+if($LASTEXITCODE -ne 0) { exit 2 }
+
+Pop-Location

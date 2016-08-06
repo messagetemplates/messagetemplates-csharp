@@ -37,16 +37,7 @@ namespace MessageTemplates
         // property values.
         readonly PropertyToken[] _positionalProperties;
         readonly PropertyToken[] _namedProperties;
-
-        /// <summary>
-        /// Construct a message template using manually-defined text and property tokens.
-        /// </summary>
-        /// <param name="tokens">The text and property tokens defining the template.</param>
-        public MessageTemplate(IEnumerable<MessageTemplateToken> tokens)
-            : this(string.Join("", tokens), tokens)
-        {
-        }
-
+        
         /// <summary>
         /// Construct a message template using manually-defined text and property tokens.
         /// </summary>

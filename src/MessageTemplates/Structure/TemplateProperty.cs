@@ -64,7 +64,14 @@ namespace MessageTemplates.Structure
         /// <returns>True if the name is valid; otherwise, false.</returns>
         public static bool IsValidName(string name)
         {
+#if NO_STRING_ISNULLORWHITESPACE
+            if (name == null) return false;
+            if (string.IsNullOrEmpty(name.Trim()))
+                return false;
+            return true;
+#else
             return !string.IsNullOrWhiteSpace(name);
+#endif
         }
     }
 }
