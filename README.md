@@ -4,6 +4,7 @@
 An implementation of named string replacements, which allows formatting, parsing, and capturing properties. MessageTemplates is compatible with the [Message Templates Standard](http://messagetemplates.org/). The C# implementation was extracted from Serilog.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/i0y2e205vask3425/branch/master?svg=true)](https://ci.appveyor.com/project/adamchester/messagetemplates/branch/master)
+[![NuGet](https://img.shields.io/nuget/v/MessageTemplates.svg?maxAge=2592000)](https://www.nuget.org/packages/MessageTemplates)
 
 ### Samples
 
