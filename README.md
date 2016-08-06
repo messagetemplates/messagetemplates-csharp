@@ -5,7 +5,7 @@ An implementation of named string replacements, which allows formatting, parsing
 
 There is also a F# implementation, see the [messagetemplates-fsharp repository](https://github.com/messagetemplates/messagetemplates-fsharp).
 
-[![Build status](https://ci.appveyor.com/api/projects/status/i0y2e205vask3425/branch/master?svg=true)](https://ci.appveyor.com/project/adamchester/messagetemplates/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/vqky5udqsjddgnx5/branch/master?svg=true)](https://ci.appveyor.com/project/adamchester/messagetemplates-csharp/branch/master)
 [![NuGet](https://img.shields.io/nuget/v/MessageTemplates.svg?maxAge=2592000)](https://www.nuget.org/packages/MessageTemplates)
 
 ### Samples
