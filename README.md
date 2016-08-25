@@ -39,5 +39,5 @@ Message templates are a superset of standard .NET format strings, so any format 
 
 ### Compiling
 
-Opening serilog-formatting-compact.sln requires VS2015 Update 3 with the .NET Core tooling to be installed.  
+Opening MessageTemplates.sln requires VS2015 Update 3 with the .NET Core tooling to be installed.  
 See: https://www.microsoft.com/net/core#windows
