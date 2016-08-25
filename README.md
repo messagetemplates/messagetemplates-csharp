@@ -36,3 +36,8 @@ Message templates are a superset of standard .NET format strings, so any format 
   * The destructuring operator (`@`) in front of will serialize the object passed in, rather than convert it using `ToString()`.
   * the stringification operator (`$`) will convert the property value to a string before any other processing takes place, regardless of its type or implemented interfaces.
 * Property names may be suffixed with an optional format, e.g. `:000`, to control how the property is rendered; these format strings behave exactly as their counterparts within the `string.Format()` syntax
+
+### Compiling
+
+Opening serilog-formatting-compact.sln requires VS2015 Update 3 with the .NET Core tooling to be installed.  
+See: https://www.microsoft.com/net/core#windows
