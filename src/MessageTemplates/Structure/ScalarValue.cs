@@ -1,11 +1,11 @@
-﻿// Copyright 2014 Serilog Contributors
-// 
+﻿// Copyright 2013-2015 Serilog Contributors
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,8 +23,6 @@ namespace MessageTemplates.Structure
     /// </summary>
     public class ScalarValue : TemplatePropertyValue
     {
-        readonly object _value;
-
         /// <summary>
         /// Construct a <see cref="ScalarValue"/> with the specified
         /// value.
@@ -32,13 +30,13 @@ namespace MessageTemplates.Structure
         /// <param name="value">The value, which may be <code>null</code>.</param>
         public ScalarValue(object value)
         {
-            _value = value;
+            Value = value;
         }
 
         /// <summary>
         /// The value, which may be <code>null</code>.
         /// </summary>
-        public object Value => _value;
+        public object Value { get; }
 
         /// <summary>
         /// Render the value to the output.
@@ -51,33 +49,46 @@ namespace MessageTemplates.Structure
         {
             if (output == null) throw new ArgumentNullException(nameof(output));
 
-            if (_value == null)
+            if (Value == null)
             {
                 output.Write("null");
+                return;
             }
-            else
+
+            var s = Value as string;
+            if (s != null)
             {
-                var s = _value as string;
-                if (s != null)
+                if (format != "l")
                 {
-                    if (format != "l")
-                    {
-                        output.Write("\"");
-                        output.Write(s.Replace("\"", "\\\""));
-                        output.Write("\"");
-                    }
-                    else
-                    {
-                        output.Write(s);
-                    }
+                    output.Write("\"");
+                    output.Write(s.Replace("\"", "\\\""));
+                    output.Write("\"");
                 }
                 else
                 {
-                    var f = _value as IFormattable;
-                    output.Write(
-                        f?.ToString(format, formatProvider ?? CultureInfo.InvariantCulture)
-                        ?? _value.ToString());
+                    output.Write(s);
                 }
+                return;
+            }
+
+            if (formatProvider != null)
+            {
+                var custom = (ICustomFormatter)formatProvider.GetFormat(typeof(ICustomFormatter));
+                if (custom != null)
+                {
+                    output.Write(custom.Format(format, Value, formatProvider));
+                    return;
+                }
+            }
+
+            var f = Value as IFormattable;
+            if (f != null)
+            {
+                output.Write(f.ToString(format, formatProvider ?? CultureInfo.InvariantCulture));
+            }
+            else
+            {
+                output.Write(Value.ToString());
             }
         }
 
@@ -89,7 +100,8 @@ namespace MessageTemplates.Structure
         public override bool Equals(object obj)
         {
             var sv = obj as ScalarValue;
-            return sv != null && Equals(_value, sv._value);
+            if (sv == null) return false;
+            return Equals(Value, sv.Value);
         }
 
         /// <summary>
@@ -98,7 +110,8 @@ namespace MessageTemplates.Structure
         /// <returns>The instance's hash code.</returns>
         public override int GetHashCode()
         {
-            return _value?.GetHashCode() ?? 0;
+            if (Value == null) return 0;
+            return Value.GetHashCode();
         }
     }
 }

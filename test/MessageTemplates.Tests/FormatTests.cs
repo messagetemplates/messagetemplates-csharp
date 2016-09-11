@@ -157,5 +157,49 @@ namespace MessageTemplates.Tests
             var m = Render("{1}, {0}", "world");
             Assert.Equal("{1}, \"world\"", m);
         }
+
+        enum Size
+        {
+            Large
+        }
+
+        class SizeFormatter : IFormatProvider, ICustomFormatter
+        {
+            private readonly IFormatProvider _innerFormatProvider;
+
+            public SizeFormatter(IFormatProvider innerFormatProvider)
+            {
+                _innerFormatProvider = innerFormatProvider;
+            }
+
+            public object GetFormat(Type formatType)
+            {
+                return formatType == typeof(ICustomFormatter) ? this : _innerFormatProvider.GetFormat(formatType);
+            }
+
+            public string Format(string format, object arg, IFormatProvider formatProvider)
+            {
+                if (arg is Size)
+                {
+                    var size = (Size)arg;
+                    return size == Size.Large ? "Huge" : size.ToString();
+                }
+
+                var formattable = arg as IFormattable;
+                if (formattable != null)
+                {
+                    return formattable.ToString(format, _innerFormatProvider);
+                }
+
+                return arg.ToString();
+            }
+        }
+
+        [Fact]
+        public void AppliesCustomFormatterToEnums()
+        {
+            var rendered = Render(new SizeFormatter(CultureInfo.InvariantCulture), "Size {size}", Size.Large);
+            Assert.Equal("Size Huge", rendered);
+        }
     }
 }
