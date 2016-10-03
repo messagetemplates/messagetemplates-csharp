@@ -39,5 +39,70 @@ Message templates are a superset of standard .NET format strings, so any format 
 
 ### Compiling
 
-Opening MessageTemplates.sln requires VS2015 Update 3 with the .NET Core tooling to be installed.  
-See: https://www.microsoft.com/net/core#windows
+Opening MessageTemplates.sln requires VS2015 Update 3 with the .NET Core tooling to be installed. See: https://www.microsoft.com/net/core#windows.
+
+### Rendering JSON data
+
+_MessageTemplates_ can be used for offline rendering of log data. Often this is recorded in JSON format.
+
+The example below shows how to take a message template and a JSON document, and render the template using values from the JSON.
+
+JSON.NET is used for JSON parsing; to install dependencies:
+
+```ps
+Install-Package Newtonsoft.Json
+Install-Package MessageTemplates -Pre
+```
+
+The example program prints the results of rendering the template out to the console:
+
+```csharp
+public class Program
+{
+    public static void Main()
+    {
+        var template = "Hello {Name}; see: {Data}";
+        var json = @"{""Name"": ""Alice"", ""Data"": {""Counts"": [1, 2, 3]}}";
+
+        var properties = (JObject) JsonConvert.DeserializeObject(json);
+
+        var parser = new MessageTemplateParser();
+        var parsed = parser.Parse(template);
+
+        var templateProperties = new TemplatePropertyValueDictionary(new TemplatePropertyList(
+            properties.Properties().Select(p => CreateProperty(p.Name, p.Value)).ToArray()));
+
+        var rendered = parsed.Render(templateProperties);
+        Console.WriteLine(rendered);
+    }
+
+    static TemplateProperty CreateProperty(string name, JToken value)
+    {
+        return new TemplateProperty(name, CreatePropertyValue(value));
+    }
+
+    static TemplatePropertyValue CreatePropertyValue(JToken value)
+    {
+        if (value.Type == JTokenType.Null)
+            return new ScalarValue(null);
+
+        var obj = value as JObject;
+        if (obj != null)
+        {
+            var properties = obj.Properties()
+                .Select(kvp => CreateProperty(kvp.Name, kvp.Value));
+
+            return new StructureValue(properties);
+        }
+
+        var arr = value as JArray;
+        if (arr != null)
+        {
+            return new SequenceValue(arr.Select(CreatePropertyValue));
+        }
+
+        return new ScalarValue(value.Value<object>());
+    }
+}
+```
+
