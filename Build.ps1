@@ -12,7 +12,7 @@ echo "build: Version suffix is $suffix"
 
 Push-Location src\MessageTemplates
 
-& dotnet pack -c Release -o ..\..\.\artifacts --version-suffix=$revision
+& dotnet pack -c Release --include-symbols -o ..\..\.\artifacts --version-suffix=$revision
 if($LASTEXITCODE -ne 0) { exit 1 }    
 
 Pop-Location
