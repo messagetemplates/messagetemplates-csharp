@@ -39,7 +39,7 @@ Message templates are a superset of standard .NET format strings, so any format 
 
 ### Compiling
 
-Opening MessageTemplates.sln requires VS2015 Update 3 with the .NET Core tooling to be installed. See: https://www.microsoft.com/net/core#windows.
+Install [dotnet core sdk 2.1.104](https://www.microsoft.com/net/download/dotnet-core/sdk-2.1.104) or compatible, and run `build.cmd` (windows) or `build.sh` (osx/linux).
 
 ### Rendering JSON data
 
