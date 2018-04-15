@@ -13,9 +13,9 @@ echo "build: Version suffix is '$suffix'"
 Push-Location src\MessageTemplates
 
 if($suffix) {
-    & dotnet pack -c Release --include-symbols --include-source --no-build -o ..\..\artifacts --version-suffix=$suffix
+    & dotnet pack -c Release --include-symbols --include-source -o ..\..\artifacts --version-suffix=$suffix
 } else {
-    & dotnet pack -c Release --include-symbols --include-source --no-build -o ..\..\artifacts
+    & dotnet pack -c Release --include-symbols --include-source -o ..\..\artifacts
 }
 if($LASTEXITCODE -ne 0) { exit 1 }
 
