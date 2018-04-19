@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#if REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,6 @@ using System.Reflection;
 
 namespace MessageTemplates.Parameters
 {
-#if REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
     static class GetablePropertyFinder
     {
         internal static IEnumerable<PropertyInfo> GetPropertiesRecursive(this Type type)
@@ -44,5 +44,5 @@ namespace MessageTemplates.Parameters
             }
         }
     }
-#endif
 }
+#endif

@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text;
-using MessageTemplates.Core;
-using MessageTemplates.Parameters;
-using MessageTemplates.Parsing;
 using Xunit;
 
 namespace MessageTemplates.Tests
