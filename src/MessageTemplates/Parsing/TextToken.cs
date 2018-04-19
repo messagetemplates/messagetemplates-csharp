@@ -13,10 +13,8 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using MessageTemplates.Core;
-using MessageTemplates.Structure;
 
 namespace MessageTemplates.Parsing
 {

@@ -13,8 +13,6 @@
 // limitations under the License.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using MessageTemplates.Core;
 using MessageTemplates.Debugging;
 using MessageTemplates.Parsing;
