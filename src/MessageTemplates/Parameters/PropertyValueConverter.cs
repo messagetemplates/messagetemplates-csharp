@@ -110,8 +110,7 @@ namespace MessageTemplates.Parameters
 
             foreach (var scalarConversionPolicy in _scalarConversionPolicies)
             {
-                ScalarValue converted;
-                if (scalarConversionPolicy.TryConvertToScalar(value, limiter, out converted))
+                if (scalarConversionPolicy.TryConvertToScalar(value, limiter, out var converted))
                     return converted;
             }
 
@@ -119,14 +118,12 @@ namespace MessageTemplates.Parameters
             {
                 foreach (var destructuringPolicy in _destructuringPolicies)
                 {
-                    TemplatePropertyValue result;
-                    if (destructuringPolicy.TryDestructure(value, limiter, out result))
+                    if (destructuringPolicy.TryDestructure(value, limiter, out var result))
                         return result;
                 }
             }
 
-            var enumerable = value as IEnumerable;
-            if (enumerable != null)
+            if (value is IEnumerable enumerable)
             {
                 // Only dictionaries with 'scalar' keys are permitted, as
                 // more complex keys may not serialize to unique values for

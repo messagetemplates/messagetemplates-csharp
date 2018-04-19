@@ -166,8 +166,7 @@ namespace MessageTemplates.Formatting
             // numeric (a handful) or an object (two comparsions) the real-world performance of the code
             // as written is as fast or faster.
 
-            var str = value as string;
-            if (str != null)
+            if (value is string str)
             {
                 FormatStringValue(str, output);
                 return;
@@ -188,9 +187,9 @@ namespace MessageTemplates.Formatting
                     return;
                 }
 
-                if (value is bool)
+                if (value is bool b)
                 {
-                    FormatBooleanValue((bool)value, output);
+                    FormatBooleanValue(b, output);
                     return;
                 }
 
@@ -206,9 +205,9 @@ namespace MessageTemplates.Formatting
                     return;
                 }
 
-                if (value is TimeSpan)
+                if (value is TimeSpan span)
                 {
-                    FormatTimeSpanValue((TimeSpan)value, output);
+                    FormatTimeSpanValue(span, output);
                     return;
                 }
             }

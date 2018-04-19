@@ -173,14 +173,12 @@ namespace MessageTemplates.Tests
 
             public string Format(string format, object arg, IFormatProvider formatProvider)
             {
-                if (arg is Size)
+                if (arg is Size size)
                 {
-                    var size = (Size)arg;
                     return size == Size.Large ? "Huge" : size.ToString();
                 }
 
-                var formattable = arg as IFormattable;
-                if (formattable != null)
+                if (arg is IFormattable formattable)
                 {
                     return formattable.ToString(format, _innerFormatProvider);
                 }

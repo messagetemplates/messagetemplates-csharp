@@ -22,8 +22,7 @@ namespace MessageTemplates.Policies
     {
         public bool TryDestructure(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out TemplatePropertyValue result)
         {
-            var del = value as Delegate;
-            if (del != null)
+            if (value is Delegate del)
             {
                 result = new ScalarValue(del.ToString());
                 return true;

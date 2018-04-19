@@ -65,8 +65,7 @@ namespace MessageTemplates.Parsing
             _rawText = rawText;
             Alignment = alignment;
 
-            int position;
-            if (int.TryParse(PropertyName, NumberStyles.None, CultureInfo.InvariantCulture, out position) &&
+            if (int.TryParse(PropertyName, NumberStyles.None, CultureInfo.InvariantCulture, out var position) &&
                 position >= 0)
             {
                 _position = position;
@@ -77,7 +76,7 @@ namespace MessageTemplates.Parsing
         /// The token's length.
         /// </summary>
         public override int Length => _rawText.Length;
-        
+
         /// <summary>
         /// Render the token to the output.
         /// </summary>
@@ -89,8 +88,7 @@ namespace MessageTemplates.Parsing
             if (properties == null) throw new ArgumentNullException(nameof(properties));
             if (output == null) throw new ArgumentNullException(nameof(output));
 
-            TemplatePropertyValue propertyValue;
-            if (!properties.TryGetValue(PropertyName, out propertyValue))
+            if (!properties.TryGetValue(PropertyName, out var propertyValue))
             {
                 output.Write(_rawText);
                 return;
@@ -166,8 +164,7 @@ namespace MessageTemplates.Parsing
         /// <param name="obj">The object to compare with the current object. </param><filterpriority>2</filterpriority>
         public override bool Equals(object obj)
         {
-            var pt = obj as PropertyToken;
-            return pt != null &&
+            return obj is PropertyToken pt &&
                 pt.Destructuring == Destructuring &&
                 pt.Format == Format &&
                 pt.PropertyName == PropertyName &&

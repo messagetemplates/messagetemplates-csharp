@@ -61,8 +61,7 @@ namespace MessageTemplates.Parsing
         /// <param name="obj">The object to compare with the current object. </param><filterpriority>2</filterpriority>
         public override bool Equals(object obj)
         {
-            var tt = obj as TextToken;
-            return tt != null && tt.Text == Text;
+            return obj is TextToken tt && tt.Text == Text;
         }
 
         /// <summary>
