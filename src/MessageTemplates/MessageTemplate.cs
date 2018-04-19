@@ -1,11 +1,11 @@
 ﻿// Copyright 2014 Serilog Contributors
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,7 +37,7 @@ namespace MessageTemplates
         // property values.
         readonly PropertyToken[] _positionalProperties;
         readonly PropertyToken[] _namedProperties;
-        
+
         /// <summary>
         /// Construct a message template using manually-defined text and property tokens.
         /// </summary>
@@ -139,7 +139,7 @@ namespace MessageTemplates
         }
 
         /// <summary>
-        /// Parses a message template (e.g. "hello, {name}") into a 
+        /// Parses a message template (e.g. "hello, {name}") into a
         /// <see cref="MessageTemplate"/> structure.
         /// </summary>
         /// <param name="templateMessage">A message template (e.g. "hello, {name}")</param>
@@ -178,27 +178,27 @@ namespace MessageTemplates
             var template = Parse(templateMessage);
             return Capture(template, values);
         }
-            
+
         /// <summary>
-        /// Captures properties from the given message template and 
+        /// Captures properties from the given message template and
         /// provided values.
         /// </summary>
         public static TemplatePropertyList CaptureWith(
             int maximumDepth, IEnumerable<Type> additionalScalarTypes,
-            IEnumerable<Core.IDestructuringPolicy> additionalDestructuringPolicies,
+            IEnumerable<IDestructuringPolicy> additionalDestructuringPolicies,
             MessageTemplate template, params object[] values)
         {
             var binder = new Parameters.PropertyBinder(
                 new Parameters.PropertyValueConverter(
                     maximumDepth,
                     additionalScalarTypes ?? Enumerable.Empty<Type>(),
-                    additionalDestructuringPolicies ?? Enumerable.Empty<Core.IDestructuringPolicy>()));
+                    additionalDestructuringPolicies ?? Enumerable.Empty<IDestructuringPolicy>()));
 
             return binder.ConstructProperties(template, values);
         }
 
         /// <summary>
-        /// Captures properties from the given message template and 
+        /// Captures properties from the given message template and
         /// provided values.
         /// </summary>
         public static TemplatePropertyList Capture(
@@ -208,7 +208,7 @@ namespace MessageTemplates
                 new Parameters.PropertyValueConverter(
                     10,
                     Enumerable.Empty<Type>(),
-                    Enumerable.Empty<Core.IDestructuringPolicy>()));
+                    Enumerable.Empty<IDestructuringPolicy>()));
 
             return binder.ConstructProperties(template, values);
         }

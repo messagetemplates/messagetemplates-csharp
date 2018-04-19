@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 // Copyright 2014 Serilog Contributors
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,9 +25,6 @@ namespace MessageTemplates.Structure
     /// </summary>
     public class StructureValue : TemplatePropertyValue
     {
-        readonly string _typeTag;
-        readonly TemplatePropertyList _properties;
-
         /// <summary>
         /// Construct a <see cref="StructureValue"/> with the provided properties.
         /// </summary>
@@ -38,15 +35,15 @@ namespace MessageTemplates.Structure
         public StructureValue(IEnumerable<TemplateProperty> properties, string typeTag = null)
         {
             if (properties == null) throw new ArgumentNullException("properties");
-            _typeTag = typeTag;
-            _properties = new TemplatePropertyList(properties.ToArray());
+            TypeTag = typeTag;
+            Properties = new TemplatePropertyList(properties.ToArray());
         }
 
         /// <summary>
         /// A piece of metadata describing the "type" of the
         /// structure, or null.
         /// </summary>
-        public string TypeTag { get { return _typeTag; } }
+        public string TypeTag { get; }
 
         /// <summary>
         /// The properties of the structure.
@@ -54,7 +51,7 @@ namespace MessageTemplates.Structure
         /// <remarks>Not presented as a dictionary because dictionary construction is
         /// relatively expensive; it is cheaper to build a dictionary over properties only
         /// when the structure is of interest.</remarks>
-        public TemplatePropertyList Properties { get { return _properties; } }
+        public TemplatePropertyList Properties { get; }
 
         /// <summary>
         /// Render the value to the output.
@@ -67,23 +64,23 @@ namespace MessageTemplates.Structure
         {
             if (output == null) throw new ArgumentNullException("output");
 
-            if (_typeTag != null)
+            if (TypeTag != null)
             {
-                output.Write(_typeTag);
+                output.Write(TypeTag);
                 output.Write(' ');
             }
             output.Write("{ ");
-            var allButLast = _properties.Length - 1;
+            var allButLast = Properties.Length - 1;
             for (var i = 0; i < allButLast; i++)
             {
-                var property = _properties[i];
+                var property = Properties[i];
                 Render(output, property, formatProvider);
                 output.Write(", ");
             }
 
-            if (_properties.Length > 0)
+            if (Properties.Length > 0)
             {
-                var last = _properties[_properties.Length - 1];
+                var last = Properties[Properties.Length - 1];
                 Render(output, last, formatProvider);
             }
 

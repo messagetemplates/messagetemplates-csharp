@@ -1,11 +1,11 @@
 ﻿// Copyright 2014 Serilog Contributors
-// 
+//
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
-// 
+//
 //     http://www.apache.org/licenses/LICENSE-2.0
-// 
+//
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,8 +24,6 @@ namespace MessageTemplates.Structure
     /// </summary>
     public class SequenceValue : TemplatePropertyValue
     {
-        readonly TemplatePropertyValueList _elements;
-
         /// <summary>
         /// Create a <see cref="SequenceValue"/> with the provided <paramref name="elements"/>.
         /// </summary>
@@ -34,13 +32,13 @@ namespace MessageTemplates.Structure
         public SequenceValue(IEnumerable<TemplatePropertyValue> elements)
         {
             if (elements == null) throw new ArgumentNullException("elements");
-            _elements = new TemplatePropertyValueList(elements);
+            Elements = new TemplatePropertyValueList(elements);
         }
 
         /// <summary>
         /// The elements of the sequence.
         /// </summary>
-        public TemplatePropertyValueList Elements => _elements;
+        public TemplatePropertyValueList Elements { get; }
 
         /// <summary>
         /// Render the value to the output.
@@ -54,15 +52,15 @@ namespace MessageTemplates.Structure
             if (output == null) throw new ArgumentNullException("output");
 
             output.Write('[');
-            var allButLast = _elements.Length - 1;
+            var allButLast = Elements.Length - 1;
             for (var i = 0; i < allButLast; ++i )
             {
-                _elements[i].Render(output, format, formatProvider);
+                Elements[i].Render(output, format, formatProvider);
                 output.Write(", ");
             }
 
-            if (_elements.Length > 0)
-                _elements[_elements.Length - 1].Render(output, format, formatProvider);
+            if (Elements.Length > 0)
+                Elements[Elements.Length - 1].Render(output, format, formatProvider);
 
             output.Write(']');
         }

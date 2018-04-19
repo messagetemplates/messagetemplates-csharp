@@ -90,13 +90,11 @@ namespace MessageTemplates.Parsing
                 !IsValidInPropertyTag(tagContent[0]))
                 return new TextToken(rawText, first);
 
-            string propertyNameAndDestructuring, format, alignment;
-            if (!TrySplitTagContent(tagContent, out propertyNameAndDestructuring, out format, out alignment))
+            if (!TrySplitTagContent(tagContent, out var propertyNameAndDestructuring, out var format, out var alignment))
                 return new TextToken(rawText, first);
 
             var propertyName = propertyNameAndDestructuring;
-            Destructuring destructuring;
-            if (TryGetDestructuringHint(propertyName[0], out destructuring))
+            if (TryGetDestructuringHint(propertyName[0], out var destructuring))
                 propertyName = propertyName.Substring(1);
 
             if (propertyName == "" || !IsValidInPropertyName(propertyName[0]))

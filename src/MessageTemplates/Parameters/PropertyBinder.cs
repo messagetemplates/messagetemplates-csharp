@@ -67,8 +67,7 @@ namespace MessageTemplates.Parameters
             var result = new TemplateProperty[messageTemplateParameters.Length];
             foreach (var property in positionalProperties)
             {
-                int position;
-                if (property.TryGetPositionalValue(out position))
+                if (property.TryGetPositionalValue(out var position))
                 {
                     if (position < 0 || position >= messageTemplateParameters.Length)
                         SelfLog.WriteLine("Unassigned positional value {0} in: {1}", position, template);

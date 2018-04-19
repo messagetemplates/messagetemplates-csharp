@@ -55,8 +55,7 @@ namespace MessageTemplates.Structure
                 return;
             }
 
-            var s = Value as string;
-            if (s != null)
+            if (Value is string s)
             {
                 if (format != "l")
                 {
@@ -81,8 +80,7 @@ namespace MessageTemplates.Structure
                 }
             }
 
-            var f = Value as IFormattable;
-            if (f != null)
+            if (Value is IFormattable f)
             {
                 output.Write(f.ToString(format, formatProvider ?? CultureInfo.InvariantCulture));
             }
@@ -99,8 +97,7 @@ namespace MessageTemplates.Structure
         /// <returns>True if the instances are equal; otherwise, false.</returns>
         public override bool Equals(object obj)
         {
-            var sv = obj as ScalarValue;
-            if (sv == null) return false;
+            if (!(obj is ScalarValue sv)) return false;
             return Equals(Value, sv.Value);
         }
 
