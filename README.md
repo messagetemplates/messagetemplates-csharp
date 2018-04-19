@@ -1,7 +1,7 @@
 
 # MessageTemplates
 
-An implementation of named string replacements, which allows formatting, parsing, and capturing properties. MessageTemplates is compatible with the [Message Templates Standard](http://messagetemplates.org/). The C# implementation was extracted from Serilog.
+An implementation of named string replacements, which allows formatting, parsing, and capturing properties. MessageTemplates is compatible with the [Message Templates Standard](https://messagetemplates.org/). The C# implementation was extracted from Serilog.
 
 There is also a F# implementation, see the [messagetemplates-fsharp repository](https://github.com/messagetemplates/messagetemplates-fsharp).
 
@@ -14,9 +14,9 @@ There is also a F# implementation, see the [messagetemplates-fsharp repository](
 
 ```csharp
 class Chair {
-    public string Back { get { return "straight"; } }
-    public int[] Legs { get { return new[] { 1, 2, 3, 4 }; } }
-    public override string ToString() { return "a chair"; }
+    public string Back => "straight";
+    public int[] Legs => new[] {1, 2, 3, 4};
+    public override string ToString() => "a chair";
 }
 
 Assert.Equal(
@@ -105,4 +105,3 @@ public class Program
     }
 }
 ```
-
