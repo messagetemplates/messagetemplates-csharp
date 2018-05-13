@@ -1,6 +1,4 @@
-﻿using MessageTemplates.Structure;
-
-namespace MessageTemplates.Core
+﻿namespace MessageTemplates
 {
   /// <summary>
   /// Supports the policy-driven construction of <see cref="TemplatePropertyValue"/>s given

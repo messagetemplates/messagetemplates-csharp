@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using MessageTemplates.Structure;
 
-namespace MessageTemplates.Core
+namespace MessageTemplates
 {
     /// <summary>
     /// 

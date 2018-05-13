@@ -13,23 +13,19 @@
 // limitations under the License.
 
 using System;
-using MessageTemplates.Core;
-using MessageTemplates.Structure;
+using MessageTemplates;
 
-namespace MessageTemplates.Policies
+class DelegateDestructuringPolicy : IDestructuringPolicy
 {
-    class DelegateDestructuringPolicy : IDestructuringPolicy
+    public bool TryDestructure(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out TemplatePropertyValue result)
     {
-        public bool TryDestructure(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out TemplatePropertyValue result)
+        if (value is Delegate del)
         {
-            if (value is Delegate del)
-            {
-                result = new ScalarValue(del.ToString());
-                return true;
-            }
-
-            result = null;
-            return false;
+            result = new ScalarValue(del.ToString());
+            return true;
         }
+
+        result = null;
+        return false;
     }
 }

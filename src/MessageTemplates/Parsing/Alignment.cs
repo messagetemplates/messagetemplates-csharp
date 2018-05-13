@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace MessageTemplates.Parsing
+namespace MessageTemplates
 {
     /// <summary>
     /// A structure representing the alignment settings to apply when rendering a property.

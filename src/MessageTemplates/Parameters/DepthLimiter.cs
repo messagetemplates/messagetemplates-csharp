@@ -12,50 +12,44 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using MessageTemplates.Core;
-using MessageTemplates.Debugging;
-using MessageTemplates.Parsing;
-using MessageTemplates.Structure;
+using MessageTemplates;
 
-namespace MessageTemplates.Parameters
+partial class PropertyValueConverter
 {
-    partial class PropertyValueConverter
+    class DepthLimiter : IMessageTemplatePropertyValueFactory
     {
-        class DepthLimiter : IMessageTemplatePropertyValueFactory
+        readonly int _maximumDestructuringDepth;
+        readonly int _currentDepth;
+        readonly PropertyValueConverter _propertyValueConverter;
+
+        public DepthLimiter(int currentDepth, int maximumDepth, PropertyValueConverter propertyValueConverter)
         {
-            readonly int _maximumDestructuringDepth;
-            readonly int _currentDepth;
-            readonly PropertyValueConverter _propertyValueConverter;
+            _maximumDestructuringDepth = maximumDepth;
+            _currentDepth = currentDepth;
+            _propertyValueConverter = propertyValueConverter;
+        }
 
-            public DepthLimiter(int currentDepth, int maximumDepth, PropertyValueConverter propertyValueConverter)
+        public TemplatePropertyValue CreatePropertyValue(object value, Destructuring destructuring)
+        {
+            return DefaultIfMaximumDepth() ??
+                _propertyValueConverter.CreatePropertyValue(value, destructuring, _currentDepth + 1);
+        }
+
+        public TemplatePropertyValue CreatePropertyValue(object value, bool destructureObjects = false)
+        {
+            return DefaultIfMaximumDepth() ??
+                _propertyValueConverter.CreatePropertyValue(value, destructureObjects, _currentDepth + 1);
+        }
+
+        TemplatePropertyValue DefaultIfMaximumDepth()
+        {
+            if (_currentDepth == _maximumDestructuringDepth)
             {
-                _maximumDestructuringDepth = maximumDepth;
-                _currentDepth = currentDepth;
-                _propertyValueConverter = propertyValueConverter;
+                SelfLog.WriteLine("Maximum destructuring depth reached.");
+                return new ScalarValue(null);
             }
 
-            public TemplatePropertyValue CreatePropertyValue(object value, Destructuring destructuring)
-            {
-                return DefaultIfMaximumDepth() ??
-                    _propertyValueConverter.CreatePropertyValue(value, destructuring, _currentDepth + 1);
-            }
-
-            public TemplatePropertyValue CreatePropertyValue(object value, bool destructureObjects = false)
-            {
-                return DefaultIfMaximumDepth() ??
-                    _propertyValueConverter.CreatePropertyValue(value, destructureObjects, _currentDepth + 1);
-            }
-
-            TemplatePropertyValue DefaultIfMaximumDepth()
-            {
-                if (_currentDepth == _maximumDestructuringDepth)
-                {
-                    SelfLog.WriteLine("Maximum destructuring depth reached.");
-                    return new ScalarValue(null);
-                }
-
-                return null;
-            }
+            return null;
         }
     }
 }

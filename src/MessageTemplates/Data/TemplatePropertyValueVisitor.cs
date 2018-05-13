@@ -13,9 +13,8 @@
 // limitations under the License.
 
 using System;
-using MessageTemplates.Structure;
 
-namespace MessageTemplates.Data
+namespace MessageTemplates
 {
     /// <summary>
     /// An abstract base class for visitors that walk data in the

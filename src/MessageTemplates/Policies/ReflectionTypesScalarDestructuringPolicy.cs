@@ -14,25 +14,21 @@
 
 using System;
 using System.Reflection;
-using MessageTemplates.Core;
-using MessageTemplates.Structure;
+using MessageTemplates;
 
-namespace MessageTemplates.Policies
+class ReflectionTypesScalarDestructuringPolicy : IDestructuringPolicy
 {
-    class ReflectionTypesScalarDestructuringPolicy : IDestructuringPolicy
+    public bool TryDestructure(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out TemplatePropertyValue result)
     {
-        public bool TryDestructure(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out TemplatePropertyValue result)
+        // These types and their subclasses are property-laden and deep;
+        // most sinks will convert them to strings.
+        if (value is Type || value is MemberInfo)
         {
-            // These types and their subclasses are property-laden and deep;
-            // most sinks will convert them to strings.
-            if (value is Type || value is MemberInfo)
-            {
-                result = new ScalarValue(value);
-                return true;
-            }
-
-            result = null;
-            return false;
+            result = new ScalarValue(value);
+            return true;
         }
+
+        result = null;
+        return false;
     }
 }

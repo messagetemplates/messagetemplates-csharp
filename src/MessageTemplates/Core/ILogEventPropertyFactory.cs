@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using MessageTemplates.Structure;
-
-namespace MessageTemplates.Core
+namespace MessageTemplates
 {
     /// <summary>
     /// Creates log event properties from regular .NET objects, applying policies as

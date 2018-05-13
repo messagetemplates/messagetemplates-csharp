@@ -13,30 +13,26 @@
 // limitations under the License.
 
 using System.Reflection;
-using MessageTemplates.Core;
-using MessageTemplates.Structure;
+using MessageTemplates;
 
-namespace MessageTemplates.Policies
+class EnumScalarConversionPolicy : IScalarConversionPolicy
 {
-    class EnumScalarConversionPolicy : IScalarConversionPolicy
+    public bool TryConvertToScalar(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out ScalarValue result)
     {
-        public bool TryConvertToScalar(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out ScalarValue result)
-        {
-            bool isEnum = false;
+        bool isEnum = false;
 #if !REFLECTION_API_EVOLVED // https://blogs.msdn.microsoft.com/dotnet/2012/08/28/evolving-the-reflection-api/
-            isEnum = value.GetType().IsEnum;
+        isEnum = value.GetType().IsEnum;
 #else
-            isEnum = value.GetType().GetTypeInfo().IsEnum;
+        isEnum = value.GetType().GetTypeInfo().IsEnum;
 #endif
 
-            if (isEnum)
-            {
-                result = new ScalarValue(value);
-                return true;
-            }
-
-            result = null;
-            return false;
+        if (isEnum)
+        {
+            result = new ScalarValue(value);
+            return true;
         }
+
+        result = null;
+        return false;
     }
 }

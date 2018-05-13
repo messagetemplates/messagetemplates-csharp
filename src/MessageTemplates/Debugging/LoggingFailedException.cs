@@ -14,7 +14,7 @@
 
 using System;
 
-namespace MessageTemplates.Debugging
+namespace MessageTemplates
 {
     /// <summary>
     /// May be thrown by log event sinks when a failure occurs. Should not be used in cases

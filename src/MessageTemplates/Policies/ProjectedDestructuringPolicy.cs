@@ -13,37 +13,34 @@
 // limitations under the License.
 
 using System;
-using MessageTemplates.Core;
-using MessageTemplates.Structure;
+using MessageTemplates;
 
-namespace MessageTemplates.Policies
+class ProjectedDestructuringPolicy : IDestructuringPolicy
 {
-    class ProjectedDestructuringPolicy : IDestructuringPolicy
+    readonly Func<Type, bool> _canApply;
+    readonly Func<object, object> _projection;
+
+    public ProjectedDestructuringPolicy(Func<Type, bool> canApply, Func<object, object> projection)
     {
-        readonly Func<Type, bool> _canApply;
-        readonly Func<object, object> _projection;
+        if (canApply == null) throw new ArgumentNullException(nameof(canApply));
+        if (projection == null) throw new ArgumentNullException(nameof(projection));
+        _canApply = canApply;
+        _projection = projection;
+    }
 
-        public ProjectedDestructuringPolicy(Func<Type, bool> canApply, Func<object, object> projection)
+    public bool TryDestructure(object value, IMessageTemplatePropertyValueFactory propertyValueFactory,
+        out TemplatePropertyValue result)
+    {
+        if (value == null) throw new ArgumentNullException(nameof(value));
+
+        if (!_canApply(value.GetType()))
         {
-            if (canApply == null) throw new ArgumentNullException(nameof(canApply));
-            if (projection == null) throw new ArgumentNullException(nameof(projection));
-            _canApply = canApply;
-            _projection = projection;
+            result = null;
+            return false;
         }
 
-        public bool TryDestructure(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out TemplatePropertyValue result)
-        {
-            if (value == null) throw new ArgumentNullException(nameof(value));
-
-            if (!_canApply(value.GetType()))
-            {
-                result = null;
-                return false;
-            }
-
-            var projected = _projection(value);
-            result = propertyValueFactory.CreatePropertyValue(projected, true);
-            return true;
-        }
+        var projected = _projection(value);
+        result = propertyValueFactory.CreatePropertyValue(projected, true);
+        return true;
     }
 }
