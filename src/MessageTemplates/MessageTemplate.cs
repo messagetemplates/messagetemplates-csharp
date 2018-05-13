@@ -16,10 +16,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MessageTemplates.Debugging;
-using MessageTemplates.Parsing;
 using System.Globalization;
-using MessageTemplates.Core;
 
 namespace MessageTemplates
 {
@@ -188,8 +185,8 @@ namespace MessageTemplates
             IEnumerable<IDestructuringPolicy> additionalDestructuringPolicies,
             MessageTemplate template, params object[] values)
         {
-            var binder = new Parameters.PropertyBinder(
-                new Parameters.PropertyValueConverter(
+            var binder = new PropertyBinder(
+                new PropertyValueConverter(
                     maximumDepth,
                     additionalScalarTypes ?? Enumerable.Empty<Type>(),
                     additionalDestructuringPolicies ?? Enumerable.Empty<IDestructuringPolicy>()));
@@ -204,8 +201,8 @@ namespace MessageTemplates
         public static TemplatePropertyList Capture(
             MessageTemplate template, params object[] values)
         {
-            var binder = new Parameters.PropertyBinder(
-                new Parameters.PropertyValueConverter(
+            var binder = new PropertyBinder(
+                new PropertyValueConverter(
                     10,
                     Enumerable.Empty<Type>(),
                     Enumerable.Empty<IDestructuringPolicy>()));

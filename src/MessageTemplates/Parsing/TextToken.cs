@@ -14,9 +14,8 @@
 
 using System;
 using System.IO;
-using MessageTemplates.Core;
 
-namespace MessageTemplates.Parsing
+namespace MessageTemplates
 {
     /// <summary>
     /// A message template token representing literal text.

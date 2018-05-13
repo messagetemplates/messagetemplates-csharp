@@ -1,30 +1,27 @@
 ﻿using System.IO;
-using MessageTemplates.Parsing;
+using MessageTemplates;
 
-namespace MessageTemplates.Formatting.Display
+static class Padding
 {
-    static class Padding
+    /// <summary>
+    /// Writes the provided value to the output, applying direction-based padding when <paramref name="alignment"/> is provided.
+    /// </summary>
+    public static void Apply(TextWriter output, string value, Alignment? alignment)
     {
-        /// <summary>
-        /// Writes the provided value to the output, applying direction-based padding when <paramref name="alignment"/> is provided.
-        /// </summary>
-        public static void Apply(TextWriter output, string value, Alignment? alignment)
+        if (!alignment.HasValue)
         {
-            if (!alignment.HasValue)
-            {
-                output.Write(value);
-                return;
-            }
-
-            var pad = alignment.Value.Width - value.Length;
-
-            if (alignment.Value.Direction == AlignmentDirection.Right)
-                output.Write(new string(' ', pad));
-
             output.Write(value);
-
-            if (alignment.Value.Direction == AlignmentDirection.Left)
-                output.Write(new string(' ', pad));
+            return;
         }
+
+        var pad = alignment.Value.Width - value.Length;
+
+        if (alignment.Value.Direction == AlignmentDirection.Right)
+            output.Write(new string(' ', pad));
+
+        output.Write(value);
+
+        if (alignment.Value.Direction == AlignmentDirection.Left)
+            output.Write(new string(' ', pad));
     }
 }

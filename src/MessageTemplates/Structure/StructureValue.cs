@@ -16,9 +16,8 @@ using System.Collections.Generic;
 
 using System.IO;
 using System.Linq;
-using MessageTemplates.Core;
 
-namespace MessageTemplates.Structure
+namespace MessageTemplates
 {
     /// <summary>
     /// A value represented as a collection of name-value properties.

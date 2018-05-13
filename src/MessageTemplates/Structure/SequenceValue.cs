@@ -15,9 +15,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using MessageTemplates.Core;
 
-namespace MessageTemplates.Structure
+namespace MessageTemplates
 {
     /// <summary>
     /// A value represented as an ordered sequence of values.

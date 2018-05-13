@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace MessageTemplates.Parsing
+namespace MessageTemplates
 {
     /// <summary>
     /// Defines the direction of the alignment.

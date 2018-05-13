@@ -14,30 +14,26 @@
 
 using System;
 using System.Collections.Generic;
-using MessageTemplates.Core;
-using MessageTemplates.Structure;
+using MessageTemplates;
 
-namespace MessageTemplates.Policies
+class SimpleScalarConversionPolicy : IScalarConversionPolicy
 {
-    class SimpleScalarConversionPolicy : IScalarConversionPolicy
+    readonly HashSet<Type> _scalarTypes;
+
+    public SimpleScalarConversionPolicy(IEnumerable<Type> scalarTypes)
     {
-        readonly HashSet<Type> _scalarTypes;
+        _scalarTypes = new HashSet<Type>(scalarTypes);
+    }
 
-        public SimpleScalarConversionPolicy(IEnumerable<Type> scalarTypes)
+    public bool TryConvertToScalar(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out ScalarValue result)
+    {
+        if (_scalarTypes.Contains(value.GetType()))
         {
-            _scalarTypes = new HashSet<Type>(scalarTypes);
+            result = new ScalarValue(value);
+            return true;
         }
 
-        public bool TryConvertToScalar(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out ScalarValue result)
-        {
-            if (_scalarTypes.Contains(value.GetType()))
-            {
-                result = new ScalarValue(value);
-                return true;
-            }
-
-            result = null;
-            return false;
-        }
+        result = null;
+        return false;
     }
 }

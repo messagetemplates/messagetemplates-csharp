@@ -16,7 +16,7 @@ using System;
 using System.Globalization;
 using System.IO;
 
-namespace MessageTemplates.Structure
+namespace MessageTemplates
 {
     /// <summary>
     /// A property value corresponding to a simple, scalar type.

@@ -15,10 +15,8 @@
 using System;
 using System.Globalization;
 using System.IO;
-using MessageTemplates.Data;
-using MessageTemplates.Structure;
 
-namespace MessageTemplates.Formatting
+namespace MessageTemplates
 {
     /// <summary>
     /// Converts MessageTemplates's structured property value format into JSON.

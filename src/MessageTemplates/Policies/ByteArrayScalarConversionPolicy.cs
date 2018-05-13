@@ -13,39 +13,35 @@
 // limitations under the License.
 
 using System.Linq;
-using MessageTemplates.Core;
-using MessageTemplates.Structure;
+using MessageTemplates;
 
-namespace MessageTemplates.Policies
+// Byte arrays, when logged, need to be copied so that they are
+// safe from concurrent modification when written to asynchronous
+// sinks. Byte arrays larger than 1k are written as descriptive strings.
+class ByteArrayScalarConversionPolicy : IScalarConversionPolicy
 {
-    // Byte arrays, when logged, need to be copied so that they are
-    // safe from concurrent modification when written to asynchronous
-    // sinks. Byte arrays larger than 1k are written as descriptive strings.
-    class ByteArrayScalarConversionPolicy : IScalarConversionPolicy
+    const int MaximumByteArrayLength = 1024;
+
+    public bool TryConvertToScalar(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out ScalarValue result)
     {
-        const int MaximumByteArrayLength = 1024;
-
-        public bool TryConvertToScalar(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out ScalarValue result)
+        var bytes = value as byte[];
+        if (bytes == null)
         {
-            var bytes = value as byte[];
-            if (bytes == null)
-            {
-                result = null;
-                return false;
-            }
-
-            if (bytes.Length > MaximumByteArrayLength)
-            {
-                var start = string.Concat(bytes.Take(16).Select(b => b.ToString("X2")));
-                var description = $"{start}... ({bytes.Length} bytes)";
-                result = new ScalarValue(description);
-            }
-            else
-            {
-                result = new ScalarValue(bytes.ToArray());
-            }
-
-            return true;
+            result = null;
+            return false;
         }
+
+        if (bytes.Length > MaximumByteArrayLength)
+        {
+            var start = string.Concat(bytes.Take(16).Select(b => b.ToString("X2")));
+            var description = $"{start}... ({bytes.Length} bytes)";
+            result = new ScalarValue(description);
+        }
+        else
+        {
+            result = new ScalarValue(bytes.ToArray());
+        }
+
+        return true;
     }
 }

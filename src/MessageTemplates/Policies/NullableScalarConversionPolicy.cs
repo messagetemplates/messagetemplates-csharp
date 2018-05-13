@@ -13,25 +13,23 @@
 // limitations under the License.
 
 using System;
-using MessageTemplates.Core;
-using MessageTemplates.Structure;
+using MessageTemplates;
 
-namespace MessageTemplates.Policies
+class NullableScalarConversionPolicy : IScalarConversionPolicy
 {
-    class NullableScalarConversionPolicy : IScalarConversionPolicy
+    public bool TryConvertToScalar(object value, IMessageTemplatePropertyValueFactory propertyValueFactory,
+        out ScalarValue result)
     {
-        public bool TryConvertToScalar(object value, IMessageTemplatePropertyValueFactory propertyValueFactory, out ScalarValue result)
-        {
-            var type = value.GetType();
+        var type = value.GetType();
 #if !REFLECTION_API_EVOLVED
             if (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(Nullable<>))
 #else
-            if (!type.IsConstructedGenericType || type.GetGenericTypeDefinition() != typeof(Nullable<>))
+        if (!type.IsConstructedGenericType || type.GetGenericTypeDefinition() != typeof(Nullable<>))
 #endif
-            {
-                result = null;
-                return false;
-            }
+        {
+            result = null;
+            return false;
+        }
 #if USE_DYNAMIC
             var dynamicValue = (dynamic)value;
             var innerValue = dynamicValue.HasValue ? (object)dynamicValue.Value : null;
@@ -39,11 +37,10 @@ namespace MessageTemplates.Policies
             var targetType = type.GetGenericArguments()[0];
             var innerValue = Convert.ChangeType(value, targetType, null);
 #else
-            var targetType = type.GenericTypeArguments[0];
-            var innerValue = Convert.ChangeType(value, targetType);
+        var targetType = type.GenericTypeArguments[0];
+        var innerValue = Convert.ChangeType(value, targetType);
 #endif
-            result = propertyValueFactory.CreatePropertyValue(innerValue) as ScalarValue;
-            return result != null;
-        }
+        result = propertyValueFactory.CreatePropertyValue(innerValue) as ScalarValue;
+        return result != null;
     }
 }

@@ -16,11 +16,8 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.IO;
-using MessageTemplates.Core;
-using MessageTemplates.Formatting.Display;
-using MessageTemplates.Structure;
 
-namespace MessageTemplates.Parsing
+namespace MessageTemplates
 {
     /// <summary>
     /// A message template token representing a log event property.

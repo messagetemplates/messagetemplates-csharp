@@ -12,9 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using MessageTemplates.Structure;
-
-namespace MessageTemplates.Core
+namespace MessageTemplates
 {
     /// <summary>
     /// Determine how, when destructuring, a supplied value is represented

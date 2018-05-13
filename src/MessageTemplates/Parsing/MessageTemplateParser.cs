@@ -15,9 +15,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using MessageTemplates.Core;
 
-namespace MessageTemplates.Parsing
+namespace MessageTemplates
 {
     /// <summary>
     /// Parses message template strings into sequences of text or property
